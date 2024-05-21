@@ -28,16 +28,14 @@ const deleteProductByIdFromDb = async (id: string) => {
 }
 
 const searchProductFromDb = async (searchTerm: string) => {
-  //   const result = await ProductModel.aggregate([
-  //     { $match: { $text: { $search: searchTerm } } },
-  //   ])
-  //   return result
+  // const result = await ProductModel.aggregate([
+  //   { $match: { $text: { $search: searchTerm } } },
+  // ])
+  // return result
 
-  const regex = new RegExp(searchTerm, 'i') // 'i' flag for case-insensitive search
-
-  // Use the regex in the MongoDB query to find matching products
-  const result = await ProductModel.find({ title: { $regex: regex } })
-
+  const result = await ProductModel.find({
+    $or: [{ name: { $regex: searchTerm } }],
+  })
   return result
 }
 

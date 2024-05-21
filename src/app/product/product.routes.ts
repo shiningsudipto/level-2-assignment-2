@@ -8,6 +8,6 @@ router.get('/products', productControllers.getAllProducts)
 router.get('/products/:productId', productControllers.getProductById)
 router.put('/products/:productId', productControllers.updateProductById)
 router.delete('/products/:productId', productControllers.deleteProductById)
-router.get('/products', productControllers.searchProduct)
+router.get('/product', productControllers.searchProduct)
 
 export const ProductRoutes = router

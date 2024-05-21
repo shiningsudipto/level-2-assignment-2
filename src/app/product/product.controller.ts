@@ -96,26 +96,33 @@ const deleteProductById = async (req: Request, res: Response) => {
 
 const searchProduct = async (req: Request, res: Response) => {
   try {
-    // console.log('Route hit')
+    console.log('Route hit')
+    const { searchTerm } = req.query
+    const result = await productServices.searchProductFromDb(
+      searchTerm as string,
+    )
+    if (result?.length > 0) {
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term ${searchTerm} fetched successfully!`,
+        data: result,
+      })
+    }
     // const { searchTerm } = req.query
     // console.log('text', searchTerm)
     // const result = await productServices.searchProductFromDb(
     //   searchTerm as string,
     // )
-    const { searchTerm } = req.query
-    const result = await productServices.searchProductFromDb(
-      searchTerm as string,
-    )
     res.status(200).json({
       success: true,
-      message: "Products matching search term 'iphone' fetched successfully!",
+      message: `Products matching search term ${searchTerm} fetched successfully!`,
       data: result,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: error,
+      error: error.message,
     })
   }
 }
