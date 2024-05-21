@@ -15,8 +15,16 @@ const getProductByIdFromDb = async (id: string) => {
   return result
 }
 
+const updateProductFromDbById = async (id: string, product: TProduct) => {
+  const result = await ProductModel.findByIdAndUpdate(id, product, {
+    new: true,
+  })
+  return result
+}
+
 export const productServices = {
   createProductIntoDb,
   getProductsFromDb,
   getProductByIdFromDb,
+  updateProductFromDbById,
 }

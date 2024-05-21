@@ -6,5 +6,6 @@ const router = express.Router()
 router.post('/products', productControllers.createProduct)
 router.get('/products', productControllers.getAllProducts)
 router.get('/products/:productId', productControllers.getProductById)
+router.put('/products/:productId', productControllers.updateProductById)
 
 export const ProductRoutes = router
