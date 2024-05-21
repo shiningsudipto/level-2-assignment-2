@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { TOrder } from './order.interface'
 
-const OrderSchema: Schema = new Schema<TOrder>({
+const OrderSchema = new Schema<TOrder>({
   email: {
     type: String,
     required: true,
