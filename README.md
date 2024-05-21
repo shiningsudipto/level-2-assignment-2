@@ -27,3 +27,5 @@ npm run start:dev
    > mongoDB connected
 
 ### If yes then locally application successfully running.
+
+- Live url:
