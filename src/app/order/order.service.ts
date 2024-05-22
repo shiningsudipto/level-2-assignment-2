@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ProductModel } from '../product/product.model'
 import { TOrder } from './order.interface'
 import { OrderModel } from './order.model'
