@@ -1,10 +1,21 @@
 import { Request, Response } from 'express'
 import { productServices } from './product.service'
+import productValidationSchema from './product.validation'
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const product = req.body
-    const result = await productServices.createProductIntoDb(product)
+
+    const { error, value } = productValidationSchema.validate(product)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        error: error.details,
+      })
+    }
+
+    const result = await productServices.createProductIntoDb(value)
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',
@@ -24,10 +35,18 @@ const getAllProducts = async (req: Request, res: Response) => {
     const { searchTerm } = req.query
     console.log(searchTerm)
     const result = await productServices.getProductsFromDb(searchTerm as string)
+    const { error, value } = productValidationSchema.validate(result)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        error: error.details,
+      })
+    }
     res.status(200).json({
       success: true,
       message: `Products matching search term '${searchTerm}' fetched successfully!`,
-      data: result,
+      data: value,
     })
   } catch (error) {
     res.status(500).json({
@@ -49,10 +68,18 @@ const getProductById = async (req: Request, res: Response) => {
         data: null,
       })
     }
+    const { error, value } = productValidationSchema.validate(result)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        error: error.details,
+      })
+    }
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
-      data: result,
+      data: value,
     })
   } catch (error) {
     res.status(500).json({
@@ -67,9 +94,18 @@ const updateProductById = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params
     const product = req.body
+    const { error, value } = productValidationSchema.validate(product)
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        error: error.details,
+      })
+    }
+
     const result = await productServices.updateProductFromDbById(
       productId,
-      product,
+      value,
     )
     res.status(200).json({
       success: true,
