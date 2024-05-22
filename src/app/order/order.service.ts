@@ -45,7 +45,6 @@ const getAllOrdersFromDb = async (email: string) => {
       },
       {
         $project: {
-          _id: 0,
           __v: 0,
         },
       },
