@@ -12,7 +12,7 @@ const createOrderIntoDb = async (order: TOrder) => {
   // Check if the product has enough quantity
   if (productExists.inventory.quantity < orderQuantity) {
     // Handle the case where there is not enough quantity
-    throw new Error('Not enough product in stock')
+    throw new Error('Insufficient quantity available in inventory')
   }
 
   // If productId exist in product, create the order
