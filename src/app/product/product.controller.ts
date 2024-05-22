@@ -21,11 +21,11 @@ const createProduct = async (req: Request, res: Response) => {
       message: 'Product created successfully!',
       data: result,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: error,
+      error: error.message,
     })
   }
 }
@@ -33,23 +33,27 @@ const createProduct = async (req: Request, res: Response) => {
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const { searchTerm } = req.query
-    console.log(searchTerm)
     const result = await productServices.getProductsFromDb(searchTerm as string)
-    const { error, value } = productValidationSchema.validate(result)
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        error: error.details,
+    if (searchTerm && result.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
+        data: result,
+      })
+    } else if (result.length > 0) {
+      return res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
       })
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: `Products matching search term '${searchTerm}' fetched successfully!`,
-      data: value,
+      message: 'Matching product not available!',
+      data: result,
     })
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Something went wrong',
       error: error,
@@ -68,18 +72,10 @@ const getProductById = async (req: Request, res: Response) => {
         data: null,
       })
     }
-    const { error, value } = productValidationSchema.validate(result)
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        error: error.details,
-      })
-    }
     res.status(200).json({
       success: true,
       message: 'Product fetched successfully!',
-      data: value,
+      data: result,
     })
   } catch (error) {
     res.status(500).json({
