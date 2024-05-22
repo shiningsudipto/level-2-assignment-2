@@ -24,8 +24,8 @@ const createOrder = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
-      error: error.message,
+      message: error.message,
+      // error: error.message,
     })
   }
 }
@@ -42,32 +42,23 @@ const getAllOrders = async (req: Request, res: Response) => {
       })
     }
 
-    const { error, value } = orderValidationSchema.validate(result)
-
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        error: error.details,
-      })
-    }
     if (email) {
       return res.status(200).json({
         success: true,
         message: 'Orders fetched successfully for user email!',
-        data: value,
+        data: result,
       })
     } else {
       return res.status(200).json({
         success: true,
         message: 'Orders fetched successfully!',
-        data: value,
+        data: result,
       })
     }
   } catch (error: any) {
     return res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: error.message,
       error: error.message,
     })
   }
