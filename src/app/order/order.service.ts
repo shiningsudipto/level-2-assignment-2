@@ -40,7 +40,7 @@ const createOrderIntoDb = async (order: TOrder) => {
     const result = await OrderModel.create(order)
     return result
   } catch (error: any) {
-    throw new Error(error.message)
+    throw new Error(error)
   }
 }
 
